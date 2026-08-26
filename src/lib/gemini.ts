@@ -29,6 +29,7 @@ export function parseJsonLoose(text: string): unknown {
       return JSON.parse(t.slice(s, e + 1));
     } catch {}
   }
+  console.error(`[Gemini JSON Parse Error] Raw text was:`, text);
   throw new HttpError(502, "AI returned an unparseable response. Please retry.");
 }
 
@@ -36,12 +37,13 @@ export async function geminiJSON(opts: {
   prompt: string;
   images?: string[];
   thinkingBudget?: number;
+  userKey?: string;
 }): Promise<any> {
-  const key = process.env.GEMINI_API_KEY;
+  const key = opts.userKey || process.env.GEMINI_API_KEY;
   if (!key)
     throw new HttpError(
       500,
-      "GEMINI_API_KEY is not configured. Add it to .env.local (local) or your Vercel environment variables."
+      "GEMINI_API_KEY is not configured. Add it to .env.local or enter your own key in Settings."
     );
   const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
@@ -71,7 +73,8 @@ export async function geminiJSON(opts: {
         signal: AbortSignal.timeout(55000),
       }
     );
-  } catch {
+  } catch (err) {
+    console.error("[Gemini Fetch Timeout/Network Error]:", err);
     throw new HttpError(504, "The AI request timed out. Try again with fewer pages.");
   }
 
@@ -81,6 +84,7 @@ export async function geminiJSON(opts: {
       const j = await res.json();
       msg = j?.error?.message ?? msg;
     } catch {}
+    console.error(`[Gemini API Error ${res.status}]:`, msg);
     if (res.status === 429)
       throw new HttpError(429, "Gemini free-tier rate limit hit. Wait a moment and retry.");
     throw new HttpError(502, `Gemini API error: ${msg}`);
@@ -91,16 +95,21 @@ export async function geminiJSON(opts: {
   const text: string = (cand?.content?.parts ?? [])
     .map((p: any) => p?.text ?? "")
     .join("");
-  if (!text)
+  if (!text) {
+    console.error("[Gemini Empty Response Candidate]:", JSON.stringify(cand));
     throw new HttpError(
       502,
       `Gemini returned an empty response${cand?.finishReason ? ` (${cand.finishReason})` : ""}. Please retry.`
     );
+  }
   return parseJsonLoose(text);
 }
 
 export function errorResponse(e: unknown) {
-  if (e instanceof HttpError) return NextResponse.json({ error: e.message }, { status: e.status });
-  console.error(e);
+  if (e instanceof HttpError) {
+    console.error(`[API HttpError ${e.status}]:`, e.message);
+    return NextResponse.json({ error: e.message }, { status: e.status });
+  }
+  console.error("[API Unexpected Error]:", e);
   return NextResponse.json({ error: "Unexpected server error" }, { status: 500 });
 }

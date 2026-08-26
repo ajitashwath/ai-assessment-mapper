@@ -1,7 +1,24 @@
+export function getUserApiKey(): string {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem("veda_gemini_api_key") ?? "";
+}
+
+export function setUserApiKey(key: string) {
+  if (typeof window === "undefined") return;
+  if (key.trim()) {
+    localStorage.setItem("veda_gemini_api_key", key.trim());
+  } else {
+    localStorage.removeItem("veda_gemini_api_key");
+  }
+}
+
 export async function postJSON<T = any>(url: string, body: unknown): Promise<T> {
+  const userKey = getUserApiKey();
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (userKey) headers["x-user-api-key"] = userKey;
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify(body),
   });
   const data = await res.json().catch(() => ({}));
