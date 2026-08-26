@@ -30,19 +30,26 @@ export function UploadScreen({
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center px-4 py-8 text-center sm:py-10">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-[40px] sm:leading-[1.2]">
-          Upload{" "}
-          <span className="rounded-2xl bg-brand-50 px-3 py-1 text-brand-500">
-            Question Paper &amp; Answer Sheets
-          </span>
-        </h1>
-        <p className="mt-3 text-[15px] font-semibold text-ink-600">
-          Upload both files to get started
-        </p>
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center px-4 py-10 text-center">
+        {/* Hero text */}
+        <div className="fade-in">
+          <div className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-xs font-extrabold tracking-wide text-brand-600 uppercase">
+            ✨ Powered by Gemini AI
+          </div>
+          <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-ink-900 sm:text-[44px] sm:leading-[1.15]">
+            Grade exams{" "}
+            <span className="rounded-2xl bg-gradient-to-r from-brand-500 to-brand-600 px-3 py-1 text-white">
+              10× faster
+            </span>
+          </h1>
+          <p className="mt-3 text-[15px] font-medium text-ink-600">
+            Upload a question paper and answer sheet — AI extracts, maps and grades everything instantly
+          </p>
+        </div>
 
         <OrbitAvatar />
 
+        {/* Drop cards */}
         <div className="grid w-full gap-4 sm:grid-cols-2">
           <DropCard
             title="Question Paper"
@@ -51,6 +58,8 @@ export function UploadScreen({
             maxPages={QP_MAX_PAGES}
             onAdd={(f) => onAdd("qp", f)}
             onRemove={(id) => onRemove("qp", id)}
+            accent="from-violet-500/10 to-brand-500/5"
+            borderActive="border-violet-400"
           />
           <DropCard
             title="Answer Sheet"
@@ -59,30 +68,38 @@ export function UploadScreen({
             maxPages={AS_MAX_PAGES}
             onAdd={(f) => onAdd("as", f)}
             onRemove={(id) => onRemove("as", id)}
+            accent="from-brand-500/10 to-brand-400/5"
+            borderActive="border-brand-400"
           />
         </div>
 
+        {/* Error */}
         {error && (
-          <div className="mt-5 w-full rounded-xl border border-bad-600/30 bg-bad-100 px-4 py-3 text-left text-sm font-semibold text-bad-600">
-            {error}
+          <div className="slide-up mt-5 w-full rounded-xl border border-bad-600/25 bg-bad-100 px-4 py-3 text-left text-sm font-semibold text-bad-600">
+            ⚠️ {error}
           </div>
         )}
 
+        {/* CTA */}
         <button
           onClick={onStart}
           disabled={!canStart}
-          className={
-            "mt-7 flex items-center gap-2.5 rounded-full px-7 py-3.5 text-[15px] font-extrabold text-white transition " +
-            (canStart ? "bg-ink-900 hover:bg-black" : "cursor-not-allowed bg-[#D8D3CD]")
-          }
+          className={`mt-8 flex items-center gap-2.5 rounded-full px-8 py-3.5 text-[15px] font-extrabold text-white shadow-lg transition-all ${
+            canStart
+              ? "bg-ink-900 hover:scale-[1.02] hover:bg-ink-800 hover:shadow-xl active:scale-100"
+              : "cursor-not-allowed bg-ink-200 shadow-none"
+          }`}
         >
           Start Mapping
-          <IconArrowRight className="h-5 w-5" />
+          <IconArrowRight className="h-4.5 w-4.5" />
         </button>
-        <p className="mt-3 max-w-md text-sm text-ink-600">
-          Once both files are uploaded, you&apos;ll be able to map answers with questions
-        </p>
-        <p className="mt-1 text-xs text-ink-400">AI powered by Google Gemini</p>
+
+        <div className="mt-4 flex flex-col items-center gap-1">
+          <p className="text-[13px] text-ink-500">
+            Both files needed · No data stored on our servers
+          </p>
+          <p className="text-[11px] text-ink-400">AI powered by Google Gemini 2.5 Flash</p>
+        </div>
       </div>
     </div>
   );
@@ -95,6 +112,8 @@ function DropCard({
   maxPages,
   onAdd,
   onRemove,
+  accent,
+  borderActive,
 }: {
   title: string;
   metas: FileMetaT[];
@@ -102,26 +121,22 @@ function DropCard({
   maxPages: number;
   onAdd: (files: FileList | null) => void;
   onRemove: (id: string) => void;
+  accent: string;
+  borderActive: string;
 }) {
   const [drag, setDrag] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div
-      onDragOver={(e) => {
-        e.preventDefault();
-        setDrag(true);
-      }}
+      onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
       onDragLeave={() => setDrag(false)}
-      onDrop={(e) => {
-        e.preventDefault();
-        setDrag(false);
-        onAdd(e.dataTransfer.files);
-      }}
-      className={
-        "rounded-[26px] border-2 border-dashed bg-white/50 p-3.5 transition " +
-        (drag ? "border-brand-500 bg-brand-50" : "border-[#DDD6CE]")
-      }
+      onDrop={(e) => { e.preventDefault(); setDrag(false); onAdd(e.dataTransfer.files); }}
+      className={`rounded-3xl border-2 p-3 transition-all ${
+        drag
+          ? `border-brand-500 bg-gradient-to-br ${accent}`
+          : "border-[#E2DDD7] bg-white hover:border-ink-200"
+      }`}
     >
       <input
         ref={inputRef}
@@ -129,58 +144,66 @@ function DropCard({
         multiple
         accept="application/pdf,image/*"
         className="hidden"
-        onChange={(e) => {
-          onAdd(e.target.files);
-          e.target.value = "";
-        }}
+        onChange={(e) => { onAdd(e.target.files); e.target.value = ""; }}
       />
+
       {metas.length === 0 ? (
         <button
           onClick={() => inputRef.current?.click()}
-          className="flex w-full flex-col items-center gap-3 rounded-2xl px-4 py-10"
+          className="flex w-full flex-col items-center gap-3 rounded-2xl px-4 py-10 transition hover:bg-paper/60"
         >
-          <span className="grid h-12 w-12 place-items-center rounded-xl bg-[#F3F0EC]">
-            <IconUpload className="h-6 w-6 text-ink-900" />
+          <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-paper to-paper-dark shadow-inner ring-1 ring-line">
+            <IconUpload className="h-6 w-6 text-ink-700" />
           </span>
-          <span className="text-lg font-extrabold">
-            Upload <span className="text-brand-500">{title}</span>
+          <span>
+            <span className="block text-[17px] font-extrabold text-ink-900">
+              Upload{" "}
+              <span className="text-brand-500">{title}</span>
+            </span>
+            <span className="mt-0.5 block text-xs font-medium text-ink-500">
+              PDF or image · Max 10 MB
+            </span>
           </span>
-          <span className="text-sm text-ink-600">Max 10MB</span>
         </button>
       ) : (
         <div className="flex flex-col gap-2">
           {metas.map((m) => (
             <div
               key={m.id}
-              className="relative flex items-center gap-3 rounded-2xl bg-white p-3 pr-10 shadow-sm ring-1 ring-black/5"
+              className="relative flex items-center gap-3 rounded-2xl bg-white p-3 pr-10 shadow-[var(--shadow-card)] ring-1 ring-black/5"
             >
               {m.file.type === "application/pdf" ? <PdfBadge /> : <ImgBadge />}
               <div className="min-w-0 text-left">
-                <div className="truncate text-sm font-bold">{m.file.name}</div>
-                <div className="text-xs text-ink-600">
-                  {fmtSize(m.file.size)} • {m.pages === 0 ? "…" : m.pages}{" "}
-                  {m.pages === 1 ? "Page" : "Pages"}
+                <div className="truncate text-sm font-bold text-ink-900">{m.file.name}</div>
+                <div className="text-xs text-ink-500">
+                  {fmtSize(m.file.size)} ·{" "}
+                  {m.pages === 0 ? (
+                    <span className="inline-block h-2.5 w-8 animate-pulse rounded-sm bg-ink-200" />
+                  ) : (
+                    <>{m.pages} {m.pages === 1 ? "page" : "pages"}</>
+                  )}
                 </div>
               </div>
               <button
                 onClick={() => onRemove(m.id)}
                 aria-label="Remove file"
-                className="absolute top-2 right-2 grid h-6 w-6 place-items-center rounded-full bg-ink-900 text-white"
+                className="absolute top-2 right-2 grid h-6 w-6 place-items-center rounded-full bg-ink-900 text-white transition hover:bg-bad-600"
               >
-                <IconX className="h-3.5 w-3.5" />
+                <IconX className="h-3 w-3" />
               </button>
             </div>
           ))}
-          <div className="flex items-center justify-between px-1">
+
+          <div className="flex items-center justify-between px-1 pt-1">
             <button
               onClick={() => inputRef.current?.click()}
-              className="text-sm font-bold text-brand-600 hover:underline"
+              className="text-sm font-bold text-brand-600 transition hover:text-brand-700 hover:underline"
             >
               + Add more
             </button>
             {totalPages > maxPages && (
-              <span className="text-xs font-semibold text-warn-700">
-                First {maxPages} pages will be processed
+              <span className="text-[11px] font-semibold text-warn-700">
+                First {maxPages} pages used
               </span>
             )}
           </div>
@@ -191,22 +214,26 @@ function DropCard({
 }
 
 const ORBITS = [
-  { emoji: "✓", cls: "top-1 left-9", delay: "0s" },
-  { emoji: "✏️", cls: "top-8 right-1", delay: "0.6s" },
-  { emoji: "📄", cls: "bottom-5 left-1", delay: "1.2s" },
-  { emoji: "💡", cls: "right-10 bottom-0", delay: "1.8s" },
+  { emoji: "✓", cls: "top-0 left-8", delay: "0s", bg: "bg-good-600" },
+  { emoji: "✏️", cls: "top-8 -right-2", delay: "0.6s", bg: "bg-brand-500" },
+  { emoji: "📄", cls: "bottom-3 -left-2", delay: "1.2s", bg: "bg-violet-500" },
+  { emoji: "💡", cls: "right-8 -bottom-1", delay: "1.8s", bg: "bg-amber-500" },
 ];
 
 function OrbitAvatar() {
   return (
-    <div className="relative my-7 h-36 w-36 shrink-0">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-b from-brand-100/80 to-transparent" />
-      <div className="absolute inset-2.5 rounded-full bg-white shadow-inner ring-1 ring-black/5" />
-      <div className="absolute inset-0 grid place-items-center text-6xl select-none">👩🏽‍🏫</div>
+    <div className="relative my-8 h-32 w-32 shrink-0">
+      {/* Glow ring */}
+      <div className="absolute inset-0 rounded-full bg-gradient-to-b from-brand-100/70 to-transparent" />
+      {/* Inner circle */}
+      <div className="absolute inset-3 rounded-full bg-white shadow-md ring-1 ring-black/5" />
+      {/* Emoji */}
+      <div className="absolute inset-0 grid place-items-center text-[56px] select-none">👩🏽‍🏫</div>
+      {/* Orbit items */}
       {ORBITS.map((o) => (
         <span
           key={o.emoji}
-          className={`bob absolute grid h-8 w-8 place-items-center rounded-full bg-brand-500 text-sm text-white shadow-md ring-2 ring-white ${o.cls}`}
+          className={`bob absolute grid h-8 w-8 place-items-center rounded-full text-sm text-white shadow-md ring-2 ring-white ${o.bg} ${o.cls}`}
           style={{ animationDelay: o.delay }}
         >
           {o.emoji}
