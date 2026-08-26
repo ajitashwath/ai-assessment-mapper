@@ -60,27 +60,60 @@ export function assembleAnalysis(
     if (label) respByKey.set(normLabel(label), r);
   }
 
+  // Deterministic baseline: any segment whose own label normalizes to the same
+  // key as a question is treated as belonging to that question, regardless of
+  // what the grading model's segment_ids say. This guards against the model
+  // correctly transcribing/boxing an answer (extract-answers) but then
+  // dropping or mis-linking it during grading (map-grade) — which otherwise
+  // silently shows a written, correct answer as "not attempted".
+  const segsByKey = new Map<string, Segment[]>();
+  for (const s of segments) {
+    const key = normLabel(s.label);
+    if (!key) continue;
+    if (!segsByKey.has(key)) segsByKey.set(key, []);
+    segsByKey.get(key)!.push(s);
+  }
+
   const results: MapResult[] = [];
   const used = new Set<string>();
   for (const q of questions) {
     const key = normLabel(q.label);
     const r = respByKey.get(key);
-    const ids = (Array.isArray(r?.segment_ids) ? r.segment_ids : [])
+
+    const modelIds = (Array.isArray(r?.segment_ids) ? r.segment_ids : [])
       .map(String)
       .filter((id: string) => segIds.has(id));
+
+    const labelMatchIds = (segsByKey.get(key) ?? []).map((s) => s.id);
+
+    // Union: trust the model's mapping for the hard cases (out-of-order,
+    // "Ans 3", roman numerals, etc.) but never let it override an exact,
+    // unambiguous label match by dropping it.
+    const ids = Array.from(new Set([...modelIds, ...labelMatchIds]));
+
     ids.forEach((id: string) => used.add(id));
     const status = r?.status === "answered" || ids.length > 0 ? "answered" : "unanswered";
     const maxMarks = toNumOrNull(r?.max_marks) ?? q.max_marks ?? 2;
+
+    // If the model never saw this segment (didn't include it in segment_ids)
+    // but a direct label match found it anyway, the model's score/feedback
+    // were computed as if the question were unanswered — they're not
+    // trustworthy. Flag it for teacher review instead of showing a false 0.
+    const modelSawSegment = modelIds.length > 0;
+    const hasLabelOnlyMatch = labelMatchIds.length > 0 && !modelSawSegment;
     const scoreRaw = clampScore(r?.score, maxMarks);
+
     results.push({
       label: q.label,
       key,
       status,
       segment_ids: ids,
-      score: status === "answered" ? scoreRaw : 0,
+      score: status === "answered" && !hasLabelOnlyMatch ? scoreRaw : 0,
       max_marks: maxMarks,
-      feedback: String(r?.feedback ?? "").trim(),
-      confidence: toNumOrNull(r?.confidence) ?? undefined,
+      feedback: hasLabelOnlyMatch
+        ? "An answer was found for this question but could not be auto-graded reliably. Please review the highlighted region and grade manually."
+        : String(r?.feedback ?? "").trim(),
+      confidence: hasLabelOnlyMatch ? 0 : toNumOrNull(r?.confidence) ?? undefined,
     });
   }
 

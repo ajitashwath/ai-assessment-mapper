@@ -40,7 +40,7 @@ ${sJson}
 Tasks:
 1. MAP every segment to the question it answers. The student may write "Q2", "2)", "2 b)", "(ii)", "Ans 3" etc. — match to the correct question or sub-part by number. Handle answers written out of order.
 2. Grade each mapped answer out of its max_marks (use 2 when max_marks is null): judge correctness and completeness against the question text. Score may be 0 or fractional (0.5 steps).
-3. Write short teacher-style feedback (1-3 sentences, encouraging, specific to what the student wrote). For unanswered questions: one short sentence noting it was not attempted.
+3. Write short teacher-style feedback (1-2 sentences, encouraging, specific to what the student wrote). For unanswered questions: one short sentence noting it was not attempted. Keep every feedback string brief — with many questions, it is far more important that every question gets a result than that any single one gets a long explanation.
 4. List segments that match NO question under "unmatched" with a short reason.
 5. Write a 2-3 sentence "overall_summary" of the student's performance.
 
