@@ -1,5 +1,4 @@
 # AI Assessment Mapper
-
 Upload a question paper (PDF/images) and a student answer sheet (PDF/images). The app extracts every question (in printed order, sub-parts split out), extracts the handwritten answers with their exact regions, maps answers → questions, grades them with AI feedback, and lets the teacher **click a question to highlight the answer region** on the answer sheet.
 
 ## Tech stack
