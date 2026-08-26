@@ -92,7 +92,39 @@ body {
   background: #cfc8c0;
   border-radius: 8px;
 }
-
 *::-webkit-scrollbar-track {
   background: transparent;
 }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.modal-backdrop {
+  animation: fade-in 0.18s ease-out;
+}
+
+.modal-panel {
+  animation: slide-up 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-nav-item {
+  animation: slide-in-right 0.15s ease-out;
+}
+
+/* Safe area bottom padding for mobile nav */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+

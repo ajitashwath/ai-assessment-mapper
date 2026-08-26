@@ -6,6 +6,7 @@ export const maxDuration = 60;
 
 export async function POST(req: Request) {
   try {
+    const userKey = req.headers.get("x-user-api-key") ?? undefined;
     const body = await req.json();
     const questions = Array.isArray(body?.questions) ? body.questions : [];
     const segments = Array.isArray(body?.segments) ? body.segments : [];
@@ -48,7 +49,7 @@ Every question must appear exactly once in "results" (in the same order as QUEST
 Return ONLY JSON in this exact shape:
 {"results":[{"label":"1","status":"answered","segment_ids":["a1"],"score":2,"max_marks":2,"feedback":"...","confidence":0.95}],"unmatched":[{"id":"a9","label":"12","reason":"No question 12 in the paper"}],"overall_summary":"..."}`;
 
-    const data = await geminiJSON({ prompt });
+    const data = await geminiJSON({ prompt, userKey });
     return NextResponse.json(data);
   } catch (e) {
     return errorResponse(e);

@@ -6,6 +6,7 @@ export const maxDuration = 60;
 
 export async function POST(req: Request) {
   try {
+    const userKey = req.headers.get("x-user-api-key") ?? undefined;
     const body = await req.json();
     const images: string[] = Array.isArray(body?.images) ? body.images : [];
     const startPage = Math.max(1, Math.round(Number(body?.startPage) || 1));
@@ -28,7 +29,7 @@ Rules:
 Return ONLY JSON in this exact shape:
 {"questions":[{"label":"1","number":"1","sub_part":null,"text":"...","max_marks":2,"section":"A"}]}`;
 
-    const data = await geminiJSON({ prompt, images, thinkingBudget: 0 });
+    const data = await geminiJSON({ prompt, images, thinkingBudget: 0, userKey });
     return NextResponse.json(data);
   } catch (e) {
     return errorResponse(e);
