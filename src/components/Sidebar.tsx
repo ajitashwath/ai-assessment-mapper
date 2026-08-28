@@ -13,6 +13,21 @@ import {
   LogoMark,
 } from "./icons";
 
+export function SchoolCrest({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5l8-3z"
+        fill="#EAF4EC"
+        stroke="#2F7D45"
+        strokeWidth="1.2"
+      />
+      <circle cx="12" cy="10" r="3.2" fill="none" stroke="#2F7D45" strokeWidth="1.1" />
+      <path d="M12 13.2v4.3M9.3 15.5l5.4 0" stroke="#2F7D45" strokeWidth="1.1" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export type NavPage = "home" | "classroom" | "assignments" | "exams" | "library";
 
 const NAV: { icon: React.FC<{ className?: string }>; label: string; page: NavPage; emoji: string }[] = [
@@ -49,7 +64,7 @@ export function Sidebar({
             <button
               onClick={() => onNavigate("exams")}
               title="AI Teacher's Toolkit"
-              className="grid h-10 w-10 place-items-center rounded-xl bg-ink-900 shadow-md ring-1 ring-brand-500/60 transition hover:ring-brand-500"
+              className="grid h-10 w-10 place-items-center rounded-full bg-ink-900 ring-2 ring-brand-500 transition hover:bg-ink-800"
             >
               <IconSparkle className="h-4 w-4 text-brand-400" />
             </button>
@@ -65,16 +80,13 @@ export function Sidebar({
                     key={page}
                     title={label}
                     onClick={() => onNavigate(page)}
-                    className={`relative grid h-10 w-10 place-items-center rounded-xl transition-all ${
+                    className={`grid h-10 w-10 place-items-center rounded-xl transition-all ${
                       active
-                        ? "bg-brand-500/10 text-brand-600 shadow-sm"
-                        : "text-ink-600 hover:bg-paper hover:text-ink-900"
+                        ? "bg-paper text-ink-900"
+                        : "text-ink-500 hover:bg-paper/70 hover:text-ink-900"
                     }`}
                   >
                     <Icon className="h-[18px] w-[18px]" />
-                    {active && (
-                      <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 -translate-x-1.5 rounded-r-full bg-brand-500" />
-                    )}
                   </button>
                 );
               })}
@@ -91,8 +103,8 @@ export function Sidebar({
             </button>
 
             {/* School badge */}
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-paper to-paper-dark text-lg shadow-inner">
-              🏛️
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-paper">
+              <SchoolCrest className="h-5 w-5" />
             </div>
 
             {/* Expand button */}
@@ -123,41 +135,28 @@ export function Sidebar({
             {/* AI Toolkit CTA */}
             <button
               onClick={() => onNavigate("exams")}
-              className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-ink-900 py-2.5 text-sm font-extrabold text-white shadow-md ring-1 ring-brand-500/50 transition hover:bg-ink-800 hover:ring-brand-500"
+              className="mt-4 flex items-center justify-center gap-2 rounded-full bg-ink-900 py-2.5 text-sm font-extrabold text-white ring-2 ring-brand-500 transition hover:bg-ink-800"
             >
               <IconSparkle className="h-3.5 w-3.5 text-brand-400" />
               AI Teacher&apos;s Toolkit
             </button>
 
             {/* Nav */}
-            <nav className="mt-5 flex flex-col gap-0.5">
-              <p className="mb-1 px-3 text-[10px] font-extrabold tracking-widest text-ink-400 uppercase">
-                Navigation
-              </p>
+            <nav className="mt-6 flex flex-col gap-1">
               {NAV.map(({ icon: Icon, label, page }) => {
                 const active = activePage === page;
                 return (
                   <button
                     key={page}
                     onClick={() => onNavigate(page)}
-                    className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
+                    className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
                       active
-                        ? "bg-gradient-to-r from-brand-500/12 to-brand-500/4 text-ink-900"
-                        : "text-ink-600 hover:bg-paper hover:text-ink-900"
+                        ? "bg-paper text-ink-900"
+                        : "text-ink-500 hover:bg-paper/70 hover:text-ink-900"
                     }`}
                   >
-                    {active && (
-                      <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-brand-500" />
-                    )}
-                    <Icon
-                      className={`h-[18px] w-[18px] shrink-0 transition ${
-                        active ? "text-brand-500" : "text-ink-500 group-hover:text-ink-900"
-                      }`}
-                    />
+                    <Icon className="h-[18px] w-[18px] shrink-0 text-inherit" />
                     <span className="flex-1 text-left">{label}</span>
-                    {active && (
-                      <span className="h-1.5 w-1.5 rounded-full bg-brand-500 opacity-80" />
-                    )}
                   </button>
                 );
               })}
@@ -175,9 +174,9 @@ export function Sidebar({
             </button>
 
             {/* School card */}
-            <div className="mt-2 flex items-center gap-3 rounded-xl bg-gradient-to-br from-paper to-paper-dark p-3 ring-1 ring-line">
-              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white text-base shadow-sm ring-1 ring-line">
-                🏛️
+            <div className="mt-2 flex items-center gap-3 rounded-xl bg-paper p-3">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white ring-1 ring-line">
+                <SchoolCrest className="h-5 w-5" />
               </div>
               <div className="min-w-0">
                 <div className="truncate text-[13px] font-extrabold text-ink-900">Delhi Public School</div>

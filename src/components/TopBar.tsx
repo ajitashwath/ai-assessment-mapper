@@ -30,12 +30,18 @@ const PAGE_ICONS: Record<NavPage, string> = {
   library: "📚",
 };
 
-function Avatar({ size = "h-8 w-8", text = "text-[11px]" }: { size?: string; text?: string }) {
+function Avatar({ size = "h-8 w-8" }: { size?: string }) {
   return (
     <span
-      className={`grid ${size} shrink-0 select-none place-items-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 font-extrabold text-white shadow-sm ${text}`}
+      className={`grid ${size} shrink-0 select-none place-items-center overflow-hidden rounded-full bg-[#EDE9E4] shadow-sm ring-1 ring-black/5`}
     >
-      MR
+      <svg viewBox="0 0 40 40" className="h-full w-full" aria-hidden="true">
+        <rect width="40" height="40" fill="#EDE9E4" />
+        <path d="M13 17c1-6 4-10 7-10s6 4 7 10c-1-2-4-3-7-3s-6 1-7 3z" fill="#F4571F" />
+        <path d="M13 15c1-5 4-8 7-8s6 3 7 8c-1-3-4-4-7-4s-6 1-7 4z" fill="#3B3448" />
+        <circle cx="20" cy="19" r="6" fill="#2B2530" />
+        <path d="M8 40c1-8 6-13 12-13s11 5 12 13z" fill="#2B2530" />
+      </svg>
     </span>
   );
 }
@@ -122,10 +128,15 @@ export function TopBar({
           <IconArrowLeft className="h-[18px] w-[18px]" />
         </button>
 
-        {/* Breadcrumb */}
+        {/* Breadcrumb (desktop) */}
         <div className="hidden items-center gap-1.5 sm:flex">
           <span className="text-sm">{PAGE_ICONS[activePage]}</span>
           <span className="text-[15px] font-bold text-ink-900">{PAGE_LABELS[activePage]}</span>
+        </div>
+
+        {/* Logo (mobile) */}
+        <div className="flex items-center gap-2 sm:hidden">
+          <span className="text-[16px] font-extrabold tracking-tight text-ink-900">VedaAI</span>
         </div>
 
         <div className="ml-auto flex items-center gap-0.5">
@@ -150,7 +161,7 @@ export function TopBar({
               onClick={() => setUserOpen((v) => !v)}
               className="flex items-center gap-2 rounded-xl px-2 py-1 transition hover:bg-paper"
             >
-              <Avatar />
+              <Avatar size="h-8 w-8" />
               <span className="text-[13px] font-bold text-ink-900">Madhur Rastogi</span>
               <IconChevronDown
                 className={`h-3.5 w-3.5 text-ink-500 transition-transform duration-200 ${
@@ -163,7 +174,7 @@ export function TopBar({
               <div className="slide-up absolute top-full right-0 z-50 mt-2 w-60 overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-modal)]">
                 {/* Profile header */}
                 <div className="flex items-center gap-3 bg-gradient-to-br from-paper to-paper-dark px-4 py-3.5">
-                  <Avatar size="h-10 w-10" text="text-sm" />
+                  <Avatar size="h-10 w-10" />
                   <div className="min-w-0">
                     <div className="truncate text-[13px] font-extrabold text-ink-900">Madhur Rastogi</div>
                     <div className="truncate text-[11px] font-medium text-ink-500">
@@ -216,7 +227,7 @@ export function TopBar({
             onClick={() => { onOpenSettings(); }}
             aria-label="User menu"
           >
-            <Avatar size="h-8 w-8" text="text-[10px]" />
+            <Avatar size="h-8 w-8" />
           </button>
 
           <IconBtn className="lg:hidden" title="Menu" onClick={onOpenMobileMenu}>
