@@ -151,8 +151,12 @@ export default function Page() {
   }, [qp, as]);
 
   const back = useCallback(() => {
-    setStage("upload");
-  }, []);
+    if (stage === "results" || stage === "processing") {
+      setStage("upload");
+    } else {
+      setActivePage("home");
+    }
+  }, [stage]);
 
   // Show exam sub-stage when activePage === "exams"
   const showExamContent = activePage === "exams";
@@ -170,7 +174,7 @@ export default function Page() {
       <div className="flex min-w-0 flex-1 flex-col pb-14 lg:pb-0">
         <TopBar
           activePage={activePage}
-          onBack={showExamContent && stage === "results" ? back : undefined}
+          onBack={showExamContent ? back : undefined}
           onOpenSettings={() => setSettingsOpen(true)}
           hasApiKey={hasApiKey}
         />
