@@ -39,15 +39,21 @@ export function LogoMark({ className = "" }: P) {
       <defs>
         <linearGradient id="vedaLogoFold" x1="0" y1="0" x2="0.3" y2="1">
           <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="60%" stopColor="#ffffff" />
-          <stop offset="100%" stopColor="#bdbdbd" />
+          <stop offset="55%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#c9c9c9" />
         </linearGradient>
       </defs>
-      <rect width="40" height="40" rx="11" fill="#2E2E2E" />
-      {/* Right stroke of the V */}
-      <path d="M22 10.5H33.5L19.7 30.5H13.5L22 10.5Z" fill="#ffffff" />
-      {/* Left stroke of the V, with fold gradient */}
-      <path d="M6.5 10.5H18L20.5 15.2L13.5 30.5H8.5L6.5 10.5Z" fill="url(#vedaLogoFold)" />
+      <rect width="40" height="40" rx="7.6" fill="#2E2E2E" />
+      {/* Broad folded V from the supplied brand mark */}
+      <path
+        d="M6 10.9h9.3c2.5 0 4.6 1.5 5.4 3.9l2.6 7.8 2.7-7.8c.8-2.4 2.9-3.9 5.4-3.9H34l-6 17c-.8 2.3-2.8 3.6-5.2 3.6h-5.6c-2.4 0-4.4-1.4-5.2-3.7L6 10.9Z"
+        fill="#ffffff"
+      />
+      {/* Folded left stroke */}
+      <path
+        d="M17.4 31.5h-.2c-2.4 0-4.4-1.4-5.2-3.7L6 10.9h9.3c2.5 0 4.6 1.5 5.4 3.9l2.6 7.8-3.8 7.3c-.5.9-1.2 1.5-2.1 1.6Z"
+        fill="url(#vedaLogoFold)"
+      />
     </svg>
   );
 }

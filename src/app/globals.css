@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-baloo), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --color-brand-50: #fff5f0;
   --color-brand-100: #ffe8dc;
@@ -79,6 +79,7 @@ html { color-scheme: light; }
 
 body {
   background: var(--color-paper);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -115,6 +116,211 @@ body {
 
 /* Safe area bottom for mobile nav */
 .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* ─── Upload screen ─────────────────────────────────────── */
+
+.upload-content {
+  max-width: 694px;
+  padding: 56px 20px 24px;
+}
+
+.upload-title {
+  font-size: 34px;
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+
+.upload-highlight {
+  display: inline-block;
+  padding: 3px 8px 5px;
+  background: #fbe8df;
+  text-decoration: none;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.upload-subtitle { margin-top: 9px; color: #242127; }
+
+.teacher-avatar {
+  position: relative;
+  width: 135px;
+  height: auto;
+  margin-top: 14px;
+  flex-shrink: 0;
+}
+
+.teacher-avatar-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  clip-path: ellipse(43% 48% at 50% 50%);
+}
+
+.mobile-title-break { display: none; }
+.orbit-badge { width: 16px; height: 16px; }
+.orbit-badge svg { width: 9px; height: 9px; }
+
+.upload-card-shell {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px;
+  border-radius: 21px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.upload-card-shell-filled { padding: 10px; }
+
+.upload-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.drop-card {
+  min-width: 0;
+  height: 150px;
+  padding: 2px;
+}
+
+.drop-card-filled { height: 150px; }
+
+.file-card-content { display: flex; height: 100%; flex-direction: column; }
+.file-list {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 10px;
+}
+.file-item {
+  position: relative;
+  display: flex;
+  width: calc(100% - 40px);
+  max-width: 374px;
+  min-height: 66px;
+  margin: 0 auto;
+  align-items: center;
+  gap: 14px;
+  border-radius: 15px;
+  background: #f6f6f6;
+  padding: 10px 16px;
+}
+.file-item > span { flex-shrink: 0; }
+.file-name { font-size: 16px; line-height: 1.15; }
+.file-meta { font-size: 13px; line-height: 1.2; color: #858585; }
+.file-remove {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 26px;
+  height: 26px;
+  box-shadow: 0 3px 8px rgba(17, 17, 24, 0.2);
+}
+.file-actions { padding: 6px 8px 1px; }
+.add-more { font-size: 15px; line-height: 1.2; }
+
+.drop-card-button {
+  height: 100%;
+  justify-content: center;
+  gap: 13px;
+  padding: 14px 10px;
+}
+
+.drop-icon { width: 40px; height: 40px; }
+.drop-title { font-size: 14px; line-height: 1.1; }
+.drop-subtitle { margin-top: 5px; font-size: 11px; line-height: 1; }
+
+.upload-cta {
+  height: 34px;
+  margin-top: 30px;
+  padding: 0 13px;
+  font-size: 11px;
+}
+
+.upload-note {
+  max-width: 400px;
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ─── Dashboard chrome ──────────────────────────────────── */
+
+.sidebar-expanded {
+  width: 252px;
+  height: calc(100dvh - 20px);
+  margin: 10px 0 10px 10px;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.sidebar-collapse { width: 28px; height: 28px; }
+.sidebar-toolkit { margin-top: 42px; height: 40px; font-size: 14px; }
+.sidebar-nav { margin-top: 40px; gap: 2px; }
+.sidebar-nav-item { min-height: 34px; padding: 0 10px; }
+.sidebar-settings { min-height: 34px; padding: 0 10px; }
+.sidebar-school { height: 70px; margin-top: 2px; padding: 10px; }
+
+.topbar-header { margin: 10px 10px 0 8px; }
+.topbar-surface { height: 46px; padding: 0 7px; border-radius: 14px; }
+.topbar-back, .topbar-icon { width: 32px; height: 32px; }
+
+@media (max-width: 1023px) {
+  .upload-content {
+    max-width: 660px;
+  }
+}
+
+@media (max-width: 639px) {
+  .mobile-bottom-nav { display: none; }
+  .topbar-header { margin: 10px 10px 0; }
+  .topbar-surface { height: 46px; padding: 0 4px; }
+  .topbar-back, .topbar-icon { width: 32px; height: 32px; }
+
+  .upload-content { padding: 24px 10px 26px; }
+  .upload-title {
+    max-width: 280px;
+    white-space: normal;
+    font-size: 20px;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+  }
+  .upload-highlight {
+    display: inline;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .mobile-title-break { display: inline; }
+  .upload-subtitle { display: none; }
+  .teacher-avatar { width: 108px; margin-top: 12px; }
+  .orbit-badge { width: 18px; height: 18px; }
+  .orbit-badge svg { width: 10px; height: 10px; }
+  .upload-card-shell { margin-top: 9px; padding: 9px; border-radius: 20px; }
+  .upload-card-shell-filled { padding: 10px; }
+  .upload-card-grid { grid-template-columns: 1fr; gap: 10px; }
+  .drop-card { height: 106px; }
+  .drop-card-filled { height: 180px; }
+  .drop-card-button { gap: 9px; padding: 8px; }
+  .drop-icon { width: 34px; height: 34px; border-radius: 9px; }
+  .drop-icon svg { width: 17px; height: 17px; }
+  .drop-title { font-size: 14px; }
+  .drop-subtitle { margin-top: 4px; font-size: 10px; }
+  .file-item { min-height: 60px; gap: 8px; padding: 8px 10px; }
+  .file-name { font-size: 11px; }
+  .file-meta { font-size: 9px; }
+  .file-remove { top: -8px; right: -8px; width: 22px; height: 22px; }
+  .file-remove svg { width: 12px; height: 12px; }
+  .file-actions { padding: 3px 3px 0; }
+  .add-more { font-size: 13px; }
+  .upload-cta { height: 36px; margin-top: 20px; padding: 0 18px; font-size: 11px; }
+  .upload-note { max-width: 255px; margin-top: 10px; font-size: 11px; line-height: 1.55; }
+}
 
 /* Selection */
 ::selection {

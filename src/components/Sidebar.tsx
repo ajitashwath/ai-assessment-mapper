@@ -118,15 +118,15 @@ export function Sidebar({
           </div>
         ) : (
           /* ── Expanded ── */
-          <div className="mt-3 ml-3 flex h-[calc(100dvh-24px)] w-[260px] flex-col rounded-2xl border border-line bg-white p-4 shadow-[var(--shadow-card)]">
+          <div className="sidebar-expanded flex flex-col rounded-2xl border border-line bg-white shadow-[var(--shadow-card)]">
             {/* Logo row */}
             <div className="flex items-center gap-2.5 px-1">
-              <LogoMark className="h-9 w-9 shrink-0" />
+              <LogoMark className="h-8 w-8 shrink-0" />
               <span className="text-[19px] font-extrabold tracking-tight text-ink-900">VedaAI</span>
               <button
                 onClick={onToggle}
                 title="Collapse sidebar"
-                className="ml-auto grid h-8 w-8 place-items-center rounded-full text-ink-500 transition hover:bg-paper hover:text-ink-900"
+                className="sidebar-collapse ml-auto grid place-items-center rounded-full text-ink-500 transition hover:bg-paper hover:text-ink-900"
               >
                 <IconPanel className="h-[18px] w-[18px]" />
               </button>
@@ -135,21 +135,21 @@ export function Sidebar({
             {/* AI Toolkit CTA */}
             <button
               onClick={() => onNavigate("exams")}
-              className="mt-8 flex items-center justify-center gap-2 rounded-full bg-ink-900 py-2.5 text-sm font-extrabold text-white ring-2 ring-brand-500 transition hover:bg-ink-800"
+              className="sidebar-toolkit flex items-center justify-center gap-2 rounded-full bg-ink-900 font-extrabold text-white ring-2 ring-brand-500 transition hover:bg-ink-800"
             >
               <IconSparkle className="h-3.5 w-3.5 text-brand-400" />
               AI Teacher&apos;s Toolkit
             </button>
 
             {/* Nav */}
-            <nav className="mt-6 flex flex-col gap-1">
+            <nav className="sidebar-nav flex flex-col">
               {NAV.map(({ icon: Icon, label, page }) => {
                 const active = activePage === page;
                 return (
                   <button
                     key={page}
                     onClick={() => onNavigate(page)}
-                    className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
+                    className={`sidebar-nav-item flex items-center gap-3 rounded-xl text-sm font-semibold transition-all ${
                       active
                         ? "bg-paper text-ink-900"
                         : "text-ink-500 hover:bg-paper/70 hover:text-ink-900"
@@ -167,14 +167,14 @@ export function Sidebar({
             {/* Settings */}
             <button
               onClick={onOpenSettings}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink-600 transition hover:bg-paper hover:text-ink-900"
+              className="sidebar-settings flex items-center gap-3 rounded-xl text-sm font-semibold text-ink-600 transition hover:bg-paper hover:text-ink-900"
             >
               <IconSettings className="h-[18px] w-[18px] shrink-0 text-ink-500" />
               Settings
             </button>
 
             {/* School card */}
-            <div className="mt-2 flex items-center gap-3 rounded-xl bg-paper p-3">
+            <div className="sidebar-school flex items-center gap-3 rounded-xl bg-paper">
               <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white ring-1 ring-line">
                 <SchoolCrest className="h-5 w-5" />
               </div>
@@ -188,7 +188,7 @@ export function Sidebar({
       </aside>
 
       {/* ─── Mobile Bottom Nav ─────────────────────────────── */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-line bg-white/90 backdrop-blur-md pb-safe lg:hidden">
+      <nav className="mobile-bottom-nav fixed inset-x-0 bottom-0 z-40 flex border-t border-line bg-white/90 backdrop-blur-md pb-safe lg:hidden">
         {NAV.map(({ icon: Icon, label, page }) => {
           const active = activePage === page;
           return (
