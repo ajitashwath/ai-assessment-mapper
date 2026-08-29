@@ -135,7 +135,7 @@ export function Sidebar({
             {/* AI Toolkit CTA */}
             <button
               onClick={() => onNavigate("exams")}
-              className="mt-4 flex items-center justify-center gap-2 rounded-full bg-ink-900 py-2.5 text-sm font-extrabold text-white ring-2 ring-brand-500 transition hover:bg-ink-800"
+              className="mt-8 flex items-center justify-center gap-2 rounded-full bg-ink-900 py-2.5 text-sm font-extrabold text-white ring-2 ring-brand-500 transition hover:bg-ink-800"
             >
               <IconSparkle className="h-3.5 w-3.5 text-brand-400" />
               AI Teacher&apos;s Toolkit

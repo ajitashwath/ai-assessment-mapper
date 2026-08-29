@@ -5,10 +5,14 @@ import { getUserApiKey } from "@/lib/client";
 import type { NavPage } from "./Sidebar";
 import {
   IconArrowLeft,
+  IconAssignments,
   IconBell,
   IconChevronDown,
-  IconFolder,
+  IconClassroom,
+  IconExams,
+  IconGrid,
   IconHelp,
+  IconLibrary,
   IconMenu,
   IconSettings,
   IconSparkle,
@@ -22,12 +26,12 @@ const PAGE_LABELS: Record<NavPage, string> = {
   library: "My Library",
 };
 
-const PAGE_ICONS: Record<NavPage, string> = {
-  home: "⊞",
-  classroom: "🏫",
-  assignments: "📝",
-  exams: "📋",
-  library: "📚",
+const PAGE_ICONS: Record<NavPage, typeof IconGrid> = {
+  home: IconGrid,
+  classroom: IconClassroom,
+  assignments: IconAssignments,
+  exams: IconExams,
+  library: IconLibrary,
 };
 
 function Avatar({ size = "h-8 w-8" }: { size?: string }) {
@@ -130,8 +134,11 @@ export function TopBar({
 
         {/* Breadcrumb (desktop) */}
         <div className="hidden items-center gap-1.5 sm:flex">
-          <span className="text-sm">{PAGE_ICONS[activePage]}</span>
-          <span className="text-[15px] font-bold text-ink-900">{PAGE_LABELS[activePage]}</span>
+          {(() => {
+            const PageIcon = PAGE_ICONS[activePage];
+            return <PageIcon className="h-[17px] w-[17px] text-[#a3a3a3]" />;
+          })()}
+          <span className="text-[15px] font-medium text-[#a3a3a3]">{PAGE_LABELS[activePage]}</span>
         </div>
 
         {/* Logo (mobile) */}

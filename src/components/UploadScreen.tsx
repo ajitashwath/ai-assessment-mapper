@@ -29,7 +29,13 @@ export function UploadScreen({
   const asPages = as.reduce((n, m) => n + m.pages, 0);
 
   return (
-    <div className="h-full overflow-y-auto">
+    <div
+      className="h-full overflow-y-auto"
+      style={{
+        background:
+          "radial-gradient(90% 60% at 50% 15%, #f4efeb 0%, #ebe6e2 45%, #ddd8d5 75%, #cec9c6 100%)",
+      }}
+    >
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center px-4 py-10 text-center">
         {/* Hero text */}
         <div className="fade-in">
