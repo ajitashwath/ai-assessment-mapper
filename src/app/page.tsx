@@ -171,7 +171,7 @@ export default function Page() {
         onOpenSettings={() => setSettingsOpen(true)}
       />
 
-      <div className="flex min-w-0 flex-1 flex-col pb-14 lg:pb-0">
+      <div className="flex min-w-0 flex-1 flex-col pb-0">
         <TopBar
           activePage={activePage}
           onBack={showExamContent ? back : undefined}

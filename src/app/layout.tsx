@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Baloo_2 } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const baloo = Baloo_2({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-baloo",
+  variable: "--font-inter",
   weight: ["400", "500", "600", "700", "800"],
 });
 
@@ -23,7 +23,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${baloo.variable} font-sans antialiased`}>{children}</body>
+      <body className={`${inter.variable} font-sans antialiased`}>{children}</body>
     </html>
   );
 }

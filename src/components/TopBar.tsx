@@ -66,7 +66,7 @@ function IconBtn({
       onClick={onClick}
       title={title}
       className={
-        "relative grid h-9 w-9 place-items-center rounded-xl text-ink-600 transition hover:bg-paper hover:text-ink-900 " +
+        "topbar-icon relative grid place-items-center rounded-xl text-ink-600 transition hover:bg-paper hover:text-ink-900 " +
         className
       }
     >
@@ -103,7 +103,7 @@ export function TopBar({
   }, [userOpen]);
 
   return (
-    <header className="mx-3 mt-3 shrink-0">
+    <header className="topbar-header shrink-0">
       {/* ── API key warning banner ── */}
       {!hasApiKey && (
         <div className="mb-2 flex items-center gap-2 rounded-xl border border-warn-700/25 bg-warn-100 px-4 py-2 text-xs font-semibold text-warn-700 fade-in">
@@ -121,13 +121,13 @@ export function TopBar({
       )}
 
       {/* ── Main topbar ── */}
-      <div className="flex h-14 items-center gap-1 rounded-2xl border border-line bg-white px-2 shadow-[var(--shadow-card)]">
+      <div className="topbar-surface flex items-center gap-1 rounded-2xl border border-line bg-white shadow-[var(--shadow-card)]">
         {/* Back */}
         <button
           onClick={onBack}
           disabled={!onBack}
           aria-label="Back"
-          className="grid h-9 w-9 place-items-center rounded-xl text-ink-700 transition hover:bg-paper disabled:opacity-25"
+          className="topbar-back grid place-items-center rounded-xl text-ink-700 transition hover:bg-paper disabled:opacity-25"
         >
           <IconArrowLeft className="h-[18px] w-[18px]" />
         </button>
